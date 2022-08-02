@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <title>Send</title>
+</head>
+<body>
+
+<div class="container-sm mt-5">
+
+    <form th:method="POST" th:action="@{/messages/send}" th:object="${message}">
+
+        <nav class="navbar">
+            <p class="h1">Отправить сообщение</p>
+            <p th:text="'Пользователь: '+${log}" class="h5">Отправить сообщение</p>
+        </nav>
+
+        <div class="form-group">
+            <label for="person">Кому:</label>
+            <select class="form-control" th:field="*{recipient}" id="person">
+                <option th:each="person : ${people}" th:value="${person.getName()}" th:text="${person.getName()}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="title">Тема: </label>
+            <input class="form-control" th:field="*{topic}" type="text" id="title"/>
+        </div>
+
+        <div class="form-group">
+            <label for="textarea1">Сообщение:</label>
+            <textarea class="form-control" th:field="*{textMessage}" id="textarea1" rows="3"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-2">
+                <input class="btn btn-primary" type="submit" value="Отправить"/>
+            </div>
+            <div class="col-2">
+                <a class="nav-link" href="/messages/chats">Мои сообщения</a>
+            </div>
+            <div class="col-2">
+                <a class="nav-link" href="/messages">Выйти</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="toast-container" style="position: absolute; bottom: 20px; right: 20px;">
+    <div style="width: 250px" th:each="message : ${new_message}" class="toast" id="EpicToast" role="alert"
+         aria-live="assertive"
+         aria-atomic="true">
+        <div class="toast-header">
+            <strong th:text="${message.getSender()}" class="mr-auto">Новое собщение!</strong>
+
+            <small>Недавно</small>
+
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div th:text="${message.getTopic()}" class="toast-body">
+            Hello, world! I am eating toast
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".toast").toast('show');
+    });
+</script>
+
+</body>
+</html>
