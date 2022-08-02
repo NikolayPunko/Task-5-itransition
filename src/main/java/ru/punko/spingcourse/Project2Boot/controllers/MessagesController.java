@@ -12,7 +12,6 @@ import ru.punko.spingcourse.Project2Boot.services.UsersService;
 
 
 @Controller
-@RequestMapping("/messages")
 public class MessagesController {
 
     private final UsersService usersService;
@@ -45,20 +44,20 @@ public class MessagesController {
         return "messages/start";
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public String create( @ModelAttribute("user") User user, HttpServletResponse response) {
         setCookie(user.getName(),response);
         if(usersService.getUserByName(user.getName()).isEmpty()){
             usersService.save(user);
         }
-        return "redirect:/messages/send";
+        return "redirect:/send";
     }
 
     @PostMapping("/send")
     public String sendMessage(@ModelAttribute("message") Message message, @CookieValue(value = "log") String log) {
         message.setSender(log);
         messagesService.save(message);
-        return "redirect:/messages/send";
+        return "redirect:/send";
     }
 
     public void setCookie(String name, HttpServletResponse response){
